@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "clusterName": {
-            "value": "impdemocl01"
+            "value": ""
         },
         "clusterLocation": {
             "value": "westeurope"
@@ -12,43 +12,43 @@
             "value": "westeurope"
         },
         "adminUserName": {
-            "value": "kehowli"
+            "value": ""
         },
         "adminPassword": {
             "value": null
         },
         "nicName": {
-            "value": "NIC-impdemocl01"
+            "value": "NIC-democl01"
         },
         "publicIPAddressName": {
-            "value": "impdemocl01-PubIP"
+            "value": "democl01-PubIP"
         },
         "dnsName": {
-            "value": "impdemocl01"
+            "value": "democl01"
         },
         "virtualNetworkName": {
-            "value": "VNet-impdemocl01"
+            "value": "VNet-democl01"
         },
         "lbName": {
-            "value": "LB-impdemocl01"
+            "value": "LB-democl01"
         },
         "lbIPName": {
-            "value": "LBIP-impdemocl01"
+            "value": "LBIP-democl01"
         },
         "applicationDiagnosticsStorageAccountName": {
-            "value": "sfdgimpdemocl016736"
+            "value": "sfdgdemocl016736"
         },
         "supportLogStorageAccountName": {
-            "value": "sflogsimpdemocl013199"
+            "value": "sflogsdemocl013199"
         },
         "sourceVaultValue": {
-            "value": "/subscriptions/95efa97a-9b5d-4f74-9f75-a3396e23344d/resourceGroups/kh-imperial-demo-lunixsf/providers/Microsoft.KeyVault/vaults/impdemo"
+            "value": "/subscriptions/95efa97a-9b5d-4f74-9f75-a3396e23344d/resourceGroups/group/providers/Microsoft.KeyVault/vaults/demo"
         },
         "certificateUrlValue": {
-            "value": "https://impdemo.vault.azure.net/secrets/impcert/5b7fd74cb4384d23bff7877a7ef0f18c"
+            "value": "https://demo.vault.azure.net/secrets/impcert/5b7fd74cb4384d23bff7877a7ef0f18c"
         },
         "certificateThumbprint": {
-            "value": "CD8CBBC2B7FDB3181CB9763027927A75F2623A2E"
+            "value": ""
         },
         "vmImageSku": {
             "value": "16.04-LTS"
