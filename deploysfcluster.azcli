@@ -1,0 +1,77 @@
+
+export APP=$1
+GROUP=kh-sf-demo-${APP}
+export LOC="westeurope"
+
+##------------------------------ Sort out the name restrictions and uniqueness to prevent issues with the script!
+
+# App Service name : 2-60, Alphanumeric or -, (but not begining or ending with -)
+if [[ ! "$APP" =~ ^([[:alnum:]]|-)*$ ]] || [[ "$APP" =~ ^-|-$ ]] || [ ${#APP} -gt 60 ] || [ ${#APP} -lt 2 ] ; then
+    echo 'Application name can only container alpha numeric charactors or "-" (but not begining or ending with "-"), and be between 2-60 long'
+    exit 1
+fi
+
+az configure --defaults location=$LOC
+
+echo "Create group [${GROUP}] and set as default..."
+az  group create -n $GROUP >/dev/null
+az configure --defaults group=$GROUP
+
+echo "Create keyvault (including permissions for the current user/service principal)..."
+az keyvault create -n ${APP} --enabled-for-deployment --sku standard >/dev/null
+
+echo "Create a self-signed certificate with the custom policy..."
+az keyvault certificate create --vault-name ${APP} -n sfcert -p "{
+  \"issuerParameters\": {
+    \"certificateTransparency\": null,
+    \"name\": \"Self\"
+  },
+  \"keyProperties\": {
+    \"curve\": null,
+    \"exportable\": true,
+    \"keySize\": 2048,
+    \"keyType\": \"RSA\",
+    \"reuseKey\": true
+  },
+  \"lifetimeActions\": [
+    {
+      \"action\": {
+        \"actionType\": \"AutoRenew\"
+      },
+      \"trigger\": {
+        \"daysBeforeExpiry\": 90
+      }
+    }
+  ],
+  \"secretProperties\": {
+    \"contentType\": \"application/x-pkcs12\"
+  },
+  \"x509CertificateProperties\": {
+    \"keyUsage\": [
+      \"cRLSign\",
+      \"dataEncipherment\",
+      \"digitalSignature\",
+      \"keyEncipherment\",
+      \"keyAgreement\",
+      \"keyCertSign\"
+    ],
+    \"subject\": \"CN=${APP}.${LOC}.cloudapp.azure.com\",
+    \"validityInMonths\": 12
+  }
+}" >/dev/null
+
+#get the certificate sid
+CERT_SID="$(az keyvault certificate  show --vault-name ${APP} -n sfcert --query "sid" --output tsv )"
+
+
+#  https://docs.microsoft.com/en-us/cli/azure/sf/cluster?view=azure-cli-latest#az-sf-cluster-create
+# Create the Service Fabric cluster.
+
+#  using no template
+az sf cluster create --cluster-name $APP --vm-user-name sfadmin --vm-os UbuntuServer1604 --vm-sku Standard_D1_v2 --cluster-size 3 \
+  --secret-identifier $CERT_SID --vm-password 'Password!1234'
+
+# using template
+#az sf cluster create --cluster-name $APP  \
+#    --template-file sftemplate/template.json \
+#   --secret-identifier $CERT_SID

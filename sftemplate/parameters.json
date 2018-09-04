@@ -1,0 +1,84 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "clusterName": {
+            "value": "impdemocl01"
+        },
+        "clusterLocation": {
+            "value": "westeurope"
+        },
+        "computeLocation": {
+            "value": "westeurope"
+        },
+        "adminUserName": {
+            "value": "kehowli"
+        },
+        "adminPassword": {
+            "value": null
+        },
+        "nicName": {
+            "value": "NIC-impdemocl01"
+        },
+        "publicIPAddressName": {
+            "value": "impdemocl01-PubIP"
+        },
+        "dnsName": {
+            "value": "impdemocl01"
+        },
+        "virtualNetworkName": {
+            "value": "VNet-impdemocl01"
+        },
+        "lbName": {
+            "value": "LB-impdemocl01"
+        },
+        "lbIPName": {
+            "value": "LBIP-impdemocl01"
+        },
+        "applicationDiagnosticsStorageAccountName": {
+            "value": "sfdgimpdemocl016736"
+        },
+        "supportLogStorageAccountName": {
+            "value": "sflogsimpdemocl013199"
+        },
+        "sourceVaultValue": {
+            "value": "/subscriptions/95efa97a-9b5d-4f74-9f75-a3396e23344d/resourceGroups/kh-imperial-demo-lunixsf/providers/Microsoft.KeyVault/vaults/impdemo"
+        },
+        "certificateUrlValue": {
+            "value": "https://impdemo.vault.azure.net/secrets/impcert/5b7fd74cb4384d23bff7877a7ef0f18c"
+        },
+        "certificateThumbprint": {
+            "value": "CD8CBBC2B7FDB3181CB9763027927A75F2623A2E"
+        },
+        "vmImageSku": {
+            "value": "16.04-LTS"
+        },
+        "vmImageVersion": {
+            "value": "latest"
+        },
+        "vmImagePublisher": {
+            "value": "Canonical"
+        },
+        "vmImageOffer": {
+            "value": "UbuntuServer"
+        },
+        "nt0ephemeralStartPort": {
+            "value": 49152
+        },
+        "nt0ephemeralEndPort": {
+            "value": 65534
+        },
+        "nt0applicationStartPort": {
+            "value": 20000
+        },
+        "nt0applicationEndPort": {
+            "value": 30000
+        },
+        "nt0fabricTcpGatewayPort": {
+            "value": 19000
+        },
+        "nt0fabricHttpGatewayPort": {
+            "value": 19080
+        }
+    }
+}

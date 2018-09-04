@@ -1,0 +1,27 @@
+
+# Instructions: https://docs.microsoft.com/en-us/azure/service-fabric-mesh/service-fabric-mesh-quickstart-deploy-container
+
+# Need to add the AZ EXTENSION
+# $ az extension add --name mesh
+
+export APP=$1
+GROUP=kh-mesh-demo-${APP}
+export LOC="westeurope"
+
+##------------------------------ Sort out the name restrictions and uniqueness to prevent issues with the script!
+
+# App Service name : 2-60, Alphanumeric or -, (but not begining or ending with -)
+if [[ ! "$APP" =~ ^([[:alnum:]]|-)*$ ]] || [[ "$APP" =~ ^-|-$ ]] || [ ${#APP} -gt 60 ] || [ ${#APP} -lt 2 ] ; then
+    echo 'Application name can only container alpha numeric charactors or "-" (but not begining or ending with "-"), and be between 2-60 long'
+    exit 1
+fi
+
+az configure --defaults location=$LOC
+
+echo "Create group [${GROUP}] and set as default..."
+az  group create -n $GROUP >/dev/null
+az configure --defaults group=$GROUP
+
+
+echo "Create your application in the resource group..."
+az mesh deployment create --resource-group $GROUP --template-file ./mesh/lunix_rp.json --parameters "{\"location\": {\"value\": \"${LOC}\"}}"

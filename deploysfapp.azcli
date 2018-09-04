@@ -1,0 +1,30 @@
+
+# download the sfportaltes.pfx from keyvault
+openssl pkcs12 -in sfportaltes.pfx  -nocerts -nodes -out key.pem
+openssl pkcs12 -in sfportaltes.pfx  -clcerts -nokeys -out cert.crt
+
+
+sfctl cluster select --endpoint https://sfportaltest.westeurope.cloudapp.azure.com:19080 --key "$(pwd)/key.pem"  --cert "$(pwd)/cert.crt"  --no-verify
+
+## https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-get-started-containers-linux
+
+
+#  install generator
+sudo npm install -g yo
+npm install generator-azuresfcontainer
+
+
+# generate app (use nginx container port 80)
+yo azuresfcontainer
+
+ > HelloNginx
+ > Web
+ > -1
+ > 80:8080
+
+
+## upload application
+sfctl application upload --path HelloNginx --show-progress
+sfctl application provision --application-type-build-path HelloNginx
+sfctl application create --app-name fabric:/HelloNginx --app-type HelloNginxType --app-version 1.0.0
+
